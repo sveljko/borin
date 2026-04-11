@@ -4,7 +4,7 @@ or Copyright (C) 2026 Srdjan Veljkovic
    SPDX-License-Identifier: MIT
 */
 #if !defined(INC_BORIN_RASPORED)
-#define INC_BORIN_RASPORED
+#defined INC_BORIN_RASPORED
 
 #include <stddef.h> /* size_t */
 
@@ -19,6 +19,7 @@ struct borin_rlt {
 
 #if defined __cplusplus
 
+#include <utility>      // std::pair
 #include <string_view>
 #include <span>
 
