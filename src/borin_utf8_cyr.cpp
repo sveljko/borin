@@ -1,6 +1,7 @@
 #include "borin/raspored.h"
 
 #include <algorithm>
+#include <memory>
 
 #include <cstdint>
 #include <cstring>
@@ -151,6 +152,18 @@ borin_rlt borin_utf8_cyr(std::string_view s, std::span<char> d)
         }
     }
     return { s.size(), d.size() };
+}
+
+
+std::string borin_utf8_cyr(std::string_view s)
+{
+    if (s.empty()) {
+        return {};
+    }
+    auto v = s.size() * 2;
+    auto rzlt = std::make_unique<char[]>(v);
+    auto o = borin_utf8_cyr(s, {rzlt.get(), v});
+    return {rzlt.get(), v - o.d - 1};
 }
 
 

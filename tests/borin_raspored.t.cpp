@@ -19,18 +19,21 @@ int main() {
     std::cout << r.s << ',' << r.d << '\n';
     char db[sizeof s];
     r = utf8_borin(d, db);
-    
     // Ovde se prosledi duzxina niske u 'd', dakle, bez NUL znaka
     assert(memcmp(s, db, sizeof s-1) == 0);
     assert(0 == r.s);
     assert(1 == r.d);
-  
+
+    auto rstr = borin_utf8_cyr({s, sizeof s});
+    std::cout << "rstr = '" << rstr << "'\n";
+    assert(rstr == ocxek);
+
     char cx[] = "Cxoban tera ovcxice. Lyulya Lyusxke, na Moravi krusxke. Kuq. Cxucxecyi sxcxepan dxak.";
     char cxd[sizeof cx * 2];
-    r = borin_utf8_cyr(cx, cxd);
+    r = borin_utf8_cyr({cx, sizeof cx}, cxd);
     constexpr char cxocxek[] = "Чобан тера овчице. Љуља Љушке, на Морави крушке. Куq. Чучећи шчепан џак.";
     assert(0 == r.s);
-    assert(sizeof cxd - sizeof cxocxek + 1 == r.d);
+    assert(sizeof cxd - sizeof cxocxek == r.d);
     assert(strcmp(cxd, cxocxek) == 0);
     char cxdb[sizeof cx];
     r = utf8_borin(cxd, cxdb);
@@ -46,13 +49,18 @@ int main() {
     assert(memcmp(klin, klinocxek, sizeof klinocxek) == 0);
     assert(0 == r.s);
     assert(1 == r.d);
+    auto klinstr = utf8_borin({klinizvor, sizeof klinizvor});
+    assert(klinstr == klinocxek);
 
     char klin8[sizeof klinizvor];
-    r = borin_utf8_lat(klin, klin8);
+    r = borin_utf8_lat({klin, sizeof klin}, klin8);
     constexpr char klin8ocxek[] = "Prilagođene Njemu, Njemu i Njemu, uključio odgovarajući ǅak, ǅak i Džak, Ljubavi, Ljubavi i Ljubavi";
     assert(memcmp(klin8, klin8ocxek, sizeof klin8ocxek) == 0);
     assert(0 == r.s);
-    assert(1 == r.d);
-    
+    assert(0 == r.d);
+
+    auto klin8str = borin_utf8_lat({klinocxek, sizeof klinocxek});
+    assert(klin8str == klin8ocxek);
+
     return 0;
 }

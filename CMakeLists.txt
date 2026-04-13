@@ -8,6 +8,11 @@ option(BORIN_RASPORED_BUILD_TESTS "Build the test suite" ON)
 add_library(borin_raspored_lib src/utf8_borin.cpp src/borin_utf8_cyr.cpp src/borin_utf8_lat.cpp)
 
 target_compile_features(borin_raspored_lib PUBLIC cxx_std_20)
+
+if(MSVC)
+    target_compile_options(borin_raspored_lib PRIVATE /Zc:__cplusplus)
+endif()
+
 set_target_properties(borin_raspored_lib PROPERTIES 
     CXX_EXTENSIONS OFF
     VERSION ${PROJECT_VERSION}

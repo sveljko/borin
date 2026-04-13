@@ -20,6 +20,9 @@ struct borin_rlt {
 #if defined __cplusplus
 
 #include <string_view>
+
+#if __cplusplus >= 202002L
+
 #include <span>
 
 /** Prevodi sadrzxaj u Borinom (kodnom) rasporedu u UTF-8 cyirilicu.
@@ -117,8 +120,22 @@ borin_rlt borin_utf8_lat(std::string_view s, std::span<char> d);
  */
 borin_rlt utf8_borin(std::string_view s, std::span<char> d);
 
+#endif // __cplusplus >= 202002L
+
+/** Varijanta koja vracya sadrzxaj iz @p s u Borinom rasproedu
+    preveden u UTF-8 cyirilicu. Mozxe da se koristi u C++17. */
+std::string borin_utf8_cyr(std::string_view s);
+
+/** Varijanta koja vracya sadrzxaj iz @p s u Borinom rasproedu
+    preveden u UTF-8 latinicu. Mozxe da se koristi u C++17. */
+std::string borin_utf8_lat(std::string_view s);
+
+/** Varijanta koja vracya UTF-8 sadrzxaj iz @p s preveden u
+    Borin raspored. Mozxe da se koristi u C++17. */
+std::string utf8_borin(std::string_view s);
+
 extern "C"
-#endif
+#endif /* __cplusplus */
 /** Ovo je samo C sprega za odgovarajyucyu C++20 funkciju.
 
     @param s Pocxetak niske za prevod
