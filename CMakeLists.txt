@@ -10,7 +10,7 @@ add_library(borin_raspored_lib src/utf8_borin.cpp src/borin_utf8_cyr.cpp src/bor
 target_compile_features(borin_raspored_lib PUBLIC cxx_std_20)
 
 if(MSVC)
-    target_compile_options(borin_raspored_lib PRIVATE /Zc:__cplusplus)
+    target_compile_options(borin_raspored_lib PUBLIC "/Zc:__cplusplus")
 endif()
 
 set_target_properties(borin_raspored_lib PROPERTIES 
