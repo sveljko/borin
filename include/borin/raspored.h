@@ -20,6 +20,7 @@ struct borin_rlt {
 #if defined __cplusplus
 
 #include <string_view>
+#include <string>
 
 #if __cplusplus >= 202002L
 
