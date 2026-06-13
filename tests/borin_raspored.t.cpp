@@ -119,5 +119,5 @@ int main() {
     TEST(cpp20);
     TEST(cpp17);
 
-    return IZVESTI;
+    IZVESTI;
 }
