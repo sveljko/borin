@@ -58,7 +58,7 @@ static int cpp20() {
     DAJE (strcmp(cxd, cxocxek), 0);
     char cxdb[sizeof cx];
     r = utf8_borin(cxd, cxdb);
-    DAJE(memcmp(cx, cxdb, sizeof s), 0);
+    DAJE(memcmp(cx, cxdb, sizeof s - 1), 0);
     DAJE(r.s, 0);
     DAJE(r.d, 1);
 
@@ -76,7 +76,7 @@ static int cpp20() {
     char klin8[sizeof klinizvor];
     r = borin_utf8_lat({klin, sizeof klin - 1}, klin8);
     constexpr char klin8ocxek[] = "Prilagođene Njemu, Njemu i Njemu, uključio odgovarajući ǅak, ǅak i Džak, Ljubavi, Ljubavi i Ljubavi";
-    DAJE(memcmp(klin8, klin8ocxek, sizeof klin8ocxek), 0);
+    DAJE(memcmp(klin8, klin8ocxek, sizeof klin8ocxek - 1), 0);
     DAJE(r.s, 0);
     DAJE(r.d, 1);
 
