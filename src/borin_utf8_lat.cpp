@@ -79,7 +79,7 @@ std::string borin_utf8_lat(std::string_view s)
     auto v = s.size() * 2;
     auto rzlt = std::make_unique<char[]>(v);
     auto o = borin_utf8_lat(s, {rzlt.get(), v});
-    return {rzlt.get(), v - o.d - 1};
+    return {rzlt.get(), v - o.d};
 }
 
 

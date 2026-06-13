@@ -151,7 +151,7 @@ std::string utf8_borin(std::string_view s)
     }
     auto rzlt = std::make_unique<char[]>(s.size());
     auto o = utf8_borin(s, {rzlt.get(), s.size()});
-    return {rzlt.get(), s.size() - o.d - 1};
+    return {rzlt.get(), s.size() - o.d};
 }
 
 

@@ -31,12 +31,12 @@ struct borin_rlt {
     Prevodi onoliko znakova koliko mozxe da stane u @p d _u
     celini_. Dakle, ako je u @p d ostalo josx samo jedan
     bajt, onda necye biti mogucy upis cyrilicxnog slova.
-    
+
     Pri tome, ne postoji nacxin da se prepozna da li je
     poslednyi znak u stvari "isecxen" Borin zapis znaka u dva
     ASCII slova. Tako da, ako je neko hteo da napisxe `kosx`
     ali je napisao `kos`, znak `s` cye biti preveden kao takav.
-    
+
     Nema posebnu obradu za NUL znak ('\0'), jednako cye, kao i bilo
     koji znak koji nije ASCII slovo biti prosto prepisan.
 
@@ -49,9 +49,9 @@ struct borin_rlt {
     cxudno ako se, recimo, tako prosledyuju latinicxni tekstovi koji
     sadrzxe i ne ASCII znake, ali mozxe da bude korisno ako se koriste
     nelatinicxni znaci (Grcxki, drugi jezici ili specijalni znaci).
-    
+
     @pre Parametri @p s i @p d ne smeju da se preklapaju
-    
+
     @param s Pogled na nisku koja sadrzxaj sadrzxaj za prevod
     @param d Opseg u koji treba upisati prevedeni sadrzxaj.
     @return Par u kome redom pisxe koliko je ostalo bajtova
@@ -64,12 +64,12 @@ borin_rlt borin_utf8_cyr(std::string_view s, std::span<char> d);
     Prevodi onoliko znakova koliko mozxe da stane u @p d _u
     celini_. Dakle, ako je u @p d ostalo josx samo jedan
     bajt, onda necye biti mogucy upis cyrilicxnog slova.
-    
+
     Pri tome, ne postoji nacxin da se prepozna da li je
     poslednyi znak u stvari "isecxen" Borin zapis znaka u dva
     ASCII slova. Tako da, ako je neko hteo da napisxe `kosx`
     ali je napisao `kos`, znak `s` cye biti preveden kao takav.
-    
+
     Nema posebnu obradu za NUL znak ('\0'), jednako cye, kao i bilo
     koji znak koji nije ASCII slovo biti prosto prepisan.
 
@@ -90,9 +90,9 @@ borin_rlt borin_utf8_cyr(std::string_view s, std::span<char> d);
       "L/N zajedno sa J".
 
     Ove opcije nisu pravlyene, ali nije ih tesxko dodati, ako zatreba.
-    
+
     @pre Parametri @p s i @p d ne smeju da se preklapaju
-    
+
     @param s Pogled na nisku koja sadrzxaj sadrzxaj za prevod
     @param d Opseg u koji treba upisati prevedeni sadrzxaj.
     @return Par u kome redom pisxe koliko je ostalo bajtova
@@ -113,7 +113,7 @@ borin_rlt borin_utf8_lat(std::string_view s, std::span<char> d);
 
     @pre Parametri @p s i @p d smeju da se preklapaju samo ako je
     @p s na visxoj (ili istoj) memorijskoj adresi od @p d
-    
+
     @param s Pogled na nisku koja sadrzxaj sadrzxaj za prevod
     @param d Opseg u koji treba upisati prevedeni sadrzxaj.
     @return Par u kome redom pisxe koliko je ostalo bajtova
@@ -137,12 +137,31 @@ std::string utf8_borin(std::string_view s);
 
 extern "C"
 #endif /* __cplusplus */
-/** Ovo je samo C sprega za odgovarajyucyu C++20 funkciju.
+/** Ovo je samo C sprega za odgovarajucyu C++20 funkciju.
 
-    @param s Pocxetak niske za prevod
-    @param n Duzxina niske za prevod
-    @param d Pocxetak niske za preveden sadrzxaj
-    @param m Duzxina prostora za nisku za upis prevedenog sadrzxaja
+    @note Posxto je samo sprega, posxtuje C++ pravila za niske i nyine
+    poglede i obuhvate.
+
+    Pre svega, NUL znak mozxe da se pojavi usred niske.  Takodye, iako
+    C++ niska ima NUL znak na kraju, ne racxuna se u duzxinu. Odnosno
+    niska `abc` ima duzxinu tri, ali zauzima cxetiri znaka, cxetvrti
+    je NUL.
+
+    Da sve ne bude tako "jednostavno", pogled na nisku ne mora da se
+    zavrsxava NUL znakom, vecy je jednoznacxno odredyen pokazivacxem
+    na pocxetak i duzxinom. Obuhvat niske, `std:span<char>`, je
+    prakticxno pogled na nisku koji omogucyava promene.
+
+    Dakle, ova funkcija "preskacxe NUL znak", uvek cxita onoliko
+    znakova koliko je zadato za prevod i _ne_ stavlya NUL znak na
+    kraj. Ako se hocye "prava C niska", potrebno je zauzeti i jedan
+    znak visxe nego sxto se ovde prosledyuje u duzxini obuhvata i
+    dodati NUL rucxno.
+
+    @param s Pocxetak pogleda na nisku za prevod
+    @param n Duzxina pogleda na nisku za prevod
+    @param d Pocxetak obuhvata niske za preveden sadrzxaj
+    @param m Duzxina obuhvata nisku za upis prevedenog sadrzxaja
     @return Duzxina neiskorisxcyenog u @p s odnosno @p d
  */
 struct borin_rlt borin_utf8_cyr(char const* s, size_t n, char* d, size_t m);
@@ -150,12 +169,14 @@ struct borin_rlt borin_utf8_cyr(char const* s, size_t n, char* d, size_t m);
 #if defined __cplusplus
 extern "C"
 #endif
-/** Ovo je samo C sprega za odgovarajyucyu C++20 funkciju.
+/** Ovo je samo C sprega za odgovarajucyu C++20 funkciju.
 
-    @param s Pocxetak niske za prevod
-    @param n Duzxina niske za prevod
-    @param d Pocxetak niske za preveden sadrzxaj
-    @param m Duzxina prostora za nisku za upis prevedenog sadrzxaja
+    @note Vidi @ref borin_utf8_cyr za napomene u vezi sa C++ niskama
+
+    @param s Pocxetak pogleda na nisku za prevod
+    @param n Duzxina pogleda na nisku za prevod
+    @param d Pocxetak obuhvata niske za preveden sadrzxaj
+    @param m Duzxina obuhvata nisku za upis prevedenog sadrzxaja
     @return Duzxina neiskorisxcyenog u @p s odnosno @p d
  */
 struct borin_rlt borin_utf8_lat(char const* s, size_t n, char* d, size_t m);
@@ -164,12 +185,14 @@ struct borin_rlt borin_utf8_lat(char const* s, size_t n, char* d, size_t m);
 #if defined __cplusplus
 extern "C"
 #endif
-/** Ovo je samo C sprega za odgovarajyucyu C++20 funkciju.
+/** Ovo je samo C sprega za odgovarajucyu C++20 funkciju.
 
-    @param s Pocxetak niske za prevod
-    @param n Duzxina niske za prevod
-    @param d Pocxetak niske za preveden sadrzxaj
-    @param m Duzxina prostora za nisku za upis prevedenog sadrzxaja
+    @note Vidi @ref borin_utf8_cyr za napomene u vezi sa C++ niskama
+
+    @param s Pocxetak pogleda na nisku za prevod
+    @param n Duzxina pogleda na nisku za prevod
+    @param d Pocxetak obuhvata niske za preveden sadrzxaj
+    @param m Duzxina obuhvata nisku za upis prevedenog sadrzxaja
     @return Duzxina neiskorisxcyenog u @p s odnosno @p d
  */
 struct borin_rlt utf8_borin(char const* s, size_t n, char* d, size_t m);
