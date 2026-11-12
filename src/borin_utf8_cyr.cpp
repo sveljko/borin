@@ -73,18 +73,18 @@ borin_rlt borin_utf8_cyr(std::string_view s, std::span<char> d)
     }
     assert((s.data() - d.size() >= d.data()) || (d.data() - s.size() >= s.data()));
 
-    struct X { 
+    struct X {
         X(char const*s, uint8_t const (&u)[2])
             : cy(((uint8_t)s[0] << 8) + (uint8_t)s[1]) {
             memcpy(b,u,2);
         }
-        uint16_t cy; 
+        uint16_t cy;
         uint8_t b[2];
         auto operator<=>(uint16_t x) const {
             return cy - x;
         }
     };
-    
+
     const static X map[16] = {
         {"Cx", {0xD0, 0xA7}},
         {"Cy", {0xD0, 0x8B}},
@@ -119,10 +119,6 @@ borin_rlt borin_utf8_cyr(std::string_view s, std::span<char> d)
         }
     };
     while (!s.empty() && !d.empty()) {
-        if (s.size() == 1) {
-            d.front() = s.front();
-            return { 0, d.size()-1 };
-        }
         uint16_t c = (uint8_t(s[0]) << 8) + s[1];
         auto y = std::lower_bound(map, mapend, c);
         if ((y != mapend) && (y->cy == c)) {

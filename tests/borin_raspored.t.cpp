@@ -100,6 +100,9 @@ static int cpp17() {
     auto v = utf8_borin(r);
     DAJE(v, s);
 
+    // pokriva bubu
+    DAJE(borin_utf8_cyr("puf"), "пуф");
+
     return 0;
 }
 
